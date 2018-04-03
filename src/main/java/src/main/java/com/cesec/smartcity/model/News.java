@@ -65,8 +65,6 @@ public class News {
     @ColumnDef(comment = "新闻内容",length = 3000)
     private String newsContent;
 
-    private int a;
-
     public int getNewsId() {
         return newsId;
     }

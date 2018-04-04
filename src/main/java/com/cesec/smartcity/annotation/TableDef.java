@@ -1,4 +1,4 @@
-package src.main.java.com.cesec.smartcity.annotation;
+package com.cesec.smartcity.annotation;
 
 import java.lang.annotation.*;
 

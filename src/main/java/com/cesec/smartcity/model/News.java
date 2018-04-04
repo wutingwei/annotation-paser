@@ -1,9 +1,9 @@
-package src.main.java.com.cesec.smartcity.model;
+package com.cesec.smartcity.model;
 
 
-import src.main.java.com.cesec.smartcity.annotation.COLUMNTYPE;
-import src.main.java.com.cesec.smartcity.annotation.ColumnDef;
-import src.main.java.com.cesec.smartcity.annotation.TableDef;
+import com.cesec.smartcity.annotation.COLUMNTYPE;
+import com.cesec.smartcity.annotation.ColumnDef;
+import com.cesec.smartcity.annotation.TableDef;
 
 /**
  * <p>文件名称: com.cesec.smartcity.model</p >
@@ -22,7 +22,7 @@ public class News {
     /**
      * 新闻ID
      */
-    @ColumnDef(pk = true,nullable = false,comment = "新闻ID")
+    @ColumnDef(pk = true,type = COLUMNTYPE.INT,nullable = false,comment = "新闻ID")
     private int newsId;
     /**
      * 新闻标题

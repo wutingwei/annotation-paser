@@ -1,4 +1,4 @@
-package src.main.java.com.cesec.smartcity.exception;
+package com.cesec.smartcity.exception;
 
 public class AnnotationNoFoundException extends Exception{
 

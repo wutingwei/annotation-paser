@@ -1,4 +1,6 @@
-package src.main.java.com.cesec.smartcity.entity;
+package com.cesec.smartcity.entity;
+
+import com.cesec.smartcity.annotation.COLUMNTYPE;
 
 public class Column {
 
@@ -6,11 +8,11 @@ public class Column {
     private boolean nullable;
     private String name;
     private String comment;
-    private String type;
+    private COLUMNTYPE type;
     private int length;
     private int point;
     private String value;
-
+    private boolean autoIncrement;
     public boolean isPk() {
         return pk;
     }
@@ -43,11 +45,11 @@ public class Column {
         this.comment = comment;
     }
 
-    public String getType() {
+    public COLUMNTYPE getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(COLUMNTYPE type) {
         this.type = type;
     }
 
@@ -73,5 +75,13 @@ public class Column {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public boolean isAutoIncrement() {
+        return autoIncrement;
+    }
+
+    public void setAutoIncrement(boolean autoIncrement) {
+        this.autoIncrement = autoIncrement;
     }
 }

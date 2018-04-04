@@ -1,4 +1,4 @@
-package src.main.java.com.cesec.smartcity.entity;
+package com.cesec.smartcity.entity;
 
 /**
  * <p>文件名称: com.cesec.smartcity.entity</p >

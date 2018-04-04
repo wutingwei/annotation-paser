@@ -1,17 +1,19 @@
-package src.main.java.com.cesec.smartcity.paser;
+package com.cesec.smartcity.paser;
 
 
-import src.main.java.com.cesec.smartcity.annotation.ColumnDef;
-import src.main.java.com.cesec.smartcity.annotation.TableDef;
-import src.main.java.com.cesec.smartcity.entity.Column;
-import src.main.java.com.cesec.smartcity.entity.Table;
-import src.main.java.com.cesec.smartcity.exception.AnnotationNoFoundException;
-import src.main.java.com.cesec.smartcity.model.News;
-import src.main.java.com.cesec.smartcity.util.StringUtil;
+
+
+import com.cesec.smartcity.annotation.COLUMNTYPE;
+import com.cesec.smartcity.annotation.ColumnDef;
+import com.cesec.smartcity.annotation.TableDef;
+import com.cesec.smartcity.entity.Column;
+import com.cesec.smartcity.entity.Table;
+import com.cesec.smartcity.exception.AnnotationNoFoundException;
+import com.cesec.smartcity.model.News;
+import com.cesec.smartcity.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -80,9 +82,11 @@ public class AnnoPaser {
 
                 column.setPoint(columnDef.point());
 
-                column.setType(columnDef.type().toString());
+                column.setType(columnDef.type());
 
                 column.setValue(columnDef.value());
+
+                column.setAutoIncrement(columnDef.autoIncrement());
             }
 
         }
@@ -96,11 +100,132 @@ public class AnnoPaser {
     /**
      * 创建表
      */
-    public static void createTable(Class[] clazz){
+    public static String generactorSQL(Class clazz) throws AnnotationNoFoundException {
+
+        annoPaser(clazz);
 
         StringBuffer sb = new StringBuffer();
+        if(table.isDeleteExist()){
+            sb.append("drop table if exists ");
+            sb.append(table.getTableName());
+            sb.append(";");
+        }
 
+        sb.append("create table ");
+        sb.append(table.getTableName());
+        sb.append("(\n");
+        for(int i = 0; i < columns.size(); i++){
+            Column c = columns.get(i);
+            sb.append(c.getName());
+            sb.append(" ");
+            sb.append(c.getType());
+            if(c.getType().equals(COLUMNTYPE.VARCHAR)){ //VARCHAR类型
+                sb.append("(");
+                if(c.getLength() <= 0){
+                    sb.append(20);
+                }else{
+                    sb.append(c.getLength());
+                }
+                sb.append(") ");
 
+                if(StringUtil.isEmpty(c.getValue())){
+                    sb.append("default ");
+                    sb.append("' '");
+                }else {
+                    sb.append("default ");
+                    sb.append("'");
+                    sb.append(c.getValue());
+                    sb.append("'");
+                }
+            }else if(c.getType().equals(COLUMNTYPE.DECIMAL)){ //DECIMAL类型
+                sb.append("(");
+                if(c.getLength() <= 0){
+                    sb.append(20);
+                }else{
+                    sb.append(c.getLength());
+                }
+                sb.append(",");
+                sb.append(c.getPoint());
+                sb.append(") ");
+                if(StringUtil.isEmpty(c.getValue())){
+                    sb.append("default ");
+                    sb.append("(20,6)");
+                }else{
+                    sb.append("default ");
+                    sb.append(c.getValue());
+                }
+            }else if(c.getType().equals(COLUMNTYPE.INT)){  //INT类型
+                if(c.getLength() >0){
+                    sb.append("(");
+                    sb.append(c.getLength());
+                    sb.append(") ");
+                }else {
+                    sb.append(" ");
+                }
+                if(!c.isPk()) {
+                    if (StringUtil.isEmpty(c.getValue())) {
+                        sb.append("default ");
+                        sb.append(0);
+                    } else {
+                        sb.append("default ");
+                        sb.append(c.getValue());
+                    }
+                }
+            }else {
+                sb.append(" ");
+                if(!StringUtil.isEmpty(c.getValue())){
+                    sb.append("default ");
+                    sb.append(c.getValue());
+                }
+            }
+            if(c.isPk()){
+                sb.append(" primary key not null ");
+                if(c.isAutoIncrement()){
+                    sb.append(" auto_increment");
+                }
+            }else{
+                if(!c.isNullable()){
+                    sb.append(" not null ");
+                }
+            }
+            if(!StringUtil.isEmpty(c.getComment())){
+                sb.append(" comment '");
+                sb.append(c.getComment());
+                sb.append("'");
+            }
+            if(i == columns.size() -1 ){
+                sb.append("\n");
+            }else {
+                sb.append(",\n");
+            }
+        }
+
+        sb.append(")ENGINE=");
+        sb.append(table.getDbEngine());
+        sb.append(" default charset=");
+        sb.append(table.getCharset());
+        sb.append(";\n");
+
+        if(!StringUtil.isEmpty(table.getComment())){
+            sb.append("alter table");
+            sb.append(table.getTableName());
+            sb.append(" comment ");
+            sb.append("'");
+            sb.append(table.getComment());
+            sb.append("';");
+        }
+
+        return sb.toString();
+    }
+
+    public static List<String> generactorSQL(Class[] clazzs) throws AnnotationNoFoundException {
+
+        List<String> sqls = new ArrayList<>();
+
+        for(Class clz : clazzs){
+            sqls.add(generactorSQL(clz));
+        }
+        return sqls;
     }
 
 
@@ -145,10 +270,12 @@ public class AnnoPaser {
 
     public static void main(String[] args) throws AnnotationNoFoundException {
 //        AnnoPaser ap = new AnnoPaser();
-        AnnoPaser.annoPaser(News.class);
-        table.getTableName();
-        columns.get(0).getName();
-        System.out.println("success");
+//        AnnoPaser.annoPaser(News.class);
+//        table.getTableName();
+//        columns.get(0).getName();
+//        System.out.println("success");
+
+        System.out.println(AnnoPaser.generactorSQL(News.class));
 //        System.out.println(ap.analysisName("NewsCommentTestA","_"));
 //        char[] c = new char[]{'c','d','e','f'};
 //        String[] s = new String[]{"a","b","v","c"};
@@ -156,4 +283,5 @@ public class AnnoPaser {
 //
 //        a.forEach(e -> System.out.println(e.toString()));
     }
+
 }

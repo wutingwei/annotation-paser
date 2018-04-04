@@ -1,4 +1,4 @@
-package src.main.java.com.cesec.smartcity.util;
+package com.cesec.smartcity.util;
 
 /**
  * <p>文件名称: com.cesec.smartcity.util</p >

@@ -1,4 +1,4 @@
-package src.main.java.com.cesec.smartcity.annotation;
+package com.cesec.smartcity.annotation;
 
 /**
  * <p>文件名称: com.cesec.smartcity.annotation</p >
@@ -11,5 +11,5 @@ package src.main.java.com.cesec.smartcity.annotation;
  * @version 1.0
  */
 public enum COLUMNTYPE {
-    VARCHAR,INTEGER,TINYINT,SMALLINT,MEDIUMINT,INT,BIGINT,DECIMAL,FLOAT,DOUBLE,DATE,TIMESTAMP,ENUM
+    VARCHAR,TINYINT,SMALLINT,MEDIUMINT,INT,BIGINT,DECIMAL,FLOAT,DOUBLE,DATE,TIMESTAMP,ENUM
 }

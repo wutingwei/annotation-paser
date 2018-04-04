@@ -1,4 +1,4 @@
-package src.main.java.com.cesec.smartcity.annotation;
+package com.cesec.smartcity.annotation;
 
 import java.lang.annotation.*;
 
@@ -12,12 +12,13 @@ import java.lang.annotation.*;
  * @author 武庭伟
  * @version 1.0
  */
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD,ElementType.METHOD})
 @Documented
 @Inherited
 public @interface ColumnDef {
 
+    boolean autoIncrement() default true;
     boolean pk() default false;
     boolean nullable() default false;
     String name() default "";

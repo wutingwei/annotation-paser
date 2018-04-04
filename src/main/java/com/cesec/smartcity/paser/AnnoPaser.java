@@ -87,6 +87,20 @@ public class AnnoPaser {
 
         }
 
+        if(columns.isEmpty()){
+            throw new AnnotationNoFoundException("未找到对应的字段!");
+        }
+
+    }
+
+    /**
+     * 创建表
+     */
+    public static void createTable(Class[] clazz){
+
+        StringBuffer sb = new StringBuffer();
+
+
     }
 
 

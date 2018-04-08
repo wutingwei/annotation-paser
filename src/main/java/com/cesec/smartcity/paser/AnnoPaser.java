@@ -233,11 +233,11 @@ public class AnnoPaser {
     /**
      *
      * @param name 表或字段的名字
-     * @param sepator 分隔符
+     * @param separator 分隔符
      * @return
      */
-    private static String analysisName(String name,String sepator){
-        if(StringUtil.isEmpty(sepator) || name.length() <= 1){
+    private static String analysisName(String name,String separator){
+        if(StringUtil.isEmpty(separator) || name.length() <= 1){
             return name.toLowerCase();
         }else{
             List<Integer> posList = new ArrayList<>();
@@ -257,7 +257,7 @@ public class AnnoPaser {
             }
 
             for(int j : posList){
-                tmpList.add(j,sepator);
+                tmpList.add(j,separator);
             }
 
             StringBuilder tmpName = new StringBuilder();

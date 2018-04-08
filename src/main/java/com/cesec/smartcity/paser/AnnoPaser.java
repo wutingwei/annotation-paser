@@ -70,7 +70,7 @@ public class AnnoPaser {
                 if(StringUtil.isEmpty(colName)){
                     colName = field.getName();
                 }
-                column.setName(colName);
+                column.setName(analysisName(colName,"_"));
 
                 column.setComment(columnDef.comment());
 
@@ -215,6 +215,7 @@ public class AnnoPaser {
             sb.append("';");
         }
 
+        System.out.println("generactorSQL："+sb.toString());
         return sb.toString();
     }
 
